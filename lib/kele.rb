@@ -35,7 +35,13 @@ class Kele
         @messages = JSON.parse(response.body)
     end
 
-    def create_message(sender, recipient_id, token, subject, stripped_text)
-        response = self.class.post('/messages', body: {"sender": sender, "recipient_id": recipient_id, "token": token, "subject": subject, "stripped_text": stripped_text}, headers: { "authorization" => @auth_token })
+    def create_message(sender, recipient_id, subject, stripped_text)
+        response = self.class.post('/messages', body: {"sender": sender, "recipient_id": recipient_id, "subject": subject, "stripped_text": stripped_text}, headers: { "authorization" => @auth_token })
+        @message = JSON.parse(response.body)
+    end
+
+    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+        response = self.class.post('/checkpoint_submissions', body: {"assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "checkpoint_id": checkpoint_id, "comment": comment, "enrollment_id": enrollment_id}, headers: { "authorization" => @auth_token })
+        @submission = JSON.parse(response.body)
     end
 end
